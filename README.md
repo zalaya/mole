@@ -104,5 +104,5 @@ Compatible with Linux, macOS, WSL, Git Bash on Windows.
 
 ## 📘 License
 
-[MIT License](https://github.com/Zalaya/Mole/blob/main/LICENSE) — © [Zalaya](https://github.com/Zalaya)
+[GNU v3 License](https://github.com/Zalaya/Mole/blob/main/LICENSE) — © [Zalaya](https://github.com/Zalaya)
 
