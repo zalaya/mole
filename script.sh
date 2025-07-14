@@ -6,7 +6,7 @@ output_file="output.txt"
 root_directory="."
 blacklist_file=""
 watch_mode=false
-refresh_interval=1
+refresh_interval=5
 watch_shown=false
 
 function print_usage_message() {
