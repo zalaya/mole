@@ -21,18 +21,6 @@ Options:
   -w, --watch              Enable watch mode to regenerate output on changes
   -h, --help               Show this help message
 EOF
-  exit 0
-}
-
-function print_watch_dependency_error() {
-  cat <<EOF
--w|--watch mode requires either 'inotifywait' (Linux) or 'fswatch' (macOS).
-
-To install:
-  Debian/Ubuntu/WSL        → sudo apt install inotify-tools
-  macOS                    → brew install fswatch
-EOF
-  exit 1
 }
 
 while [[ $# -gt 0 ]]; do
@@ -40,8 +28,8 @@ while [[ $# -gt 0 ]]; do
     -o|--output) output_file="$2"; shift; shift ;;
     -b|--blacklist) blacklist_file="$2"; shift; shift ;;
     -w|--watch) watch_mode=true; shift ;;
-    -h|--help) print_usage_message ;;
-    -*) echo "Unknown option: $1"; exit 1 ;;
+    -h|--help) print_usage_message ; exit 0 ;;
+    -*) echo "Unknown option: $1"; print_usage_message ; exit 1 ;;
     *) root_directory="$1"; shift ;;
   esac
 done
