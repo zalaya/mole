@@ -101,20 +101,7 @@ Use `-w` or `--watch` to keep the output file updated in real time whenever some
 mole -o output.txt -b .moleignore -w .
 ````
 
-### 📦 Requirements for watch mode
-
-One of the following tools must be installed:
-
-| System      | Tool          | Install command                  |
-| ----------- | ------------- | -------------------------------- |
-| Linux / WSL | `inotifywait` | `sudo apt install inotify-tools` |
-| macOS       | `fswatch`     | `brew install fswatch`           |
-
-Mole will auto-detect the available tool and guide you if none is installed.
-
----
-
-## ✅ Requirements for the script
+## ✅ Requirements
 
 ### 🐍 Bash
 
