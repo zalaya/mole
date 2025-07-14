@@ -114,7 +114,7 @@ Mole will auto-detect the available tool and guide you if none is installed.
 
 ---
 
-## ✅ Requirements
+## ✅ Requirements for the script
 
 ### 🐍 Bash
 
