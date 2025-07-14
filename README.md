@@ -98,7 +98,7 @@ dist/
 Use `-w` or `--watch` to keep the output file updated in real time whenever something changes in the directory:
 
 ```bash
-mole -o output.txt -b .moleignore -w .
+mole -o output.txt -b blacklist.txt -w .
 ````
 
 ## ✅ Requirements
