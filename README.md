@@ -60,14 +60,16 @@ chmod +x script.sh
 ## 🔧 Options
 
 ```bash
-./script.sh [-o output_file] [-b blacklist_file] [root_directory]
+./script.sh [OPTIONS] [ROOT_DIRECTORY]
 ```
 
-| Option         | Description                                         |
-|----------------|-----------------------------------------------------|
-| `-o`           | Output file name (default: `output.txt`)            |
-| `-b`           | Path to blacklist file (excludes files/directories) |
-| root_directory | Root directory (default: current directory `"."`)   |
+| Short | Long             | Description                                               |
+| ----- | ---------------- | --------------------------------------------------------- |
+| `-o`  | `--output`       | Output file name (default: `output.txt`)                  |
+| `-b`  | `--blacklist`    | Path to blacklist file (excludes files/directories)       |
+| `-w`  | `--watch`        | Enable watch mode to regenerate output on any file change |
+| `-h`  | `--help`         | Show usage help                                           |
+|       | `ROOT_DIRECTORY` | Root directory to scan (default: current directory `"."`) |
 
 ---
 
@@ -91,6 +93,27 @@ dist/
 
 ---
 
+## 🕒 Watch mode
+
+Use `-w` or `--watch` to keep the output file updated in real time whenever something changes in the directory:
+
+```bash
+mole -o output.txt -b .moleignore -w .
+````
+
+### 📦 Requirements for watch mode
+
+One of the following tools must be installed:
+
+| System      | Tool          | Install command                  |
+| ----------- | ------------- | -------------------------------- |
+| Linux / WSL | `inotifywait` | `sudo apt install inotify-tools` |
+| macOS       | `fswatch`     | `brew install fswatch`           |
+
+Mole will auto-detect the available tool and guide you if none is installed.
+
+---
+
 ## ✅ Requirements
 
 ### 🐍 Bash
@@ -105,4 +128,3 @@ Compatible with Linux, macOS, WSL, Git Bash on Windows.
 ## 📘 License
 
 [GNU v3 License](https://github.com/Zalaya/Mole/blob/main/LICENSE) — © [Zalaya](https://github.com/Zalaya)
-
