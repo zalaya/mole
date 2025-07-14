@@ -48,6 +48,7 @@ done
 
 output_file=$(realpath "$output_file")
 root_directory=$(realpath "$root_directory")
+last_hash=""
 
 while true; do
   prune_expressions=()
@@ -85,8 +86,6 @@ while true; do
     echo "Generated file: $output_file"
     break
   fi
-
-  last_hash=""
 
   if ! $watch_shown; then
     echo "Generated file: $output_file"
