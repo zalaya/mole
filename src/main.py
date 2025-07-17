@@ -1,4 +1,5 @@
 import os
+import fnmatch
 from src.constants import TEXT_FILE_EXTENSIONS, DEFAULT_OUTPUT_FILENAME
 
 
@@ -11,6 +12,19 @@ def is_supported_file(file_path: str) -> bool:
     _, extension = os.path.splitext(file_path)
     return extension.lower() in TEXT_FILE_EXTENSIONS
 
+def should_ignore_file(file_path: str, ignore_patterns: list[str]) -> bool:
+    """
+    Returns True if the given filepath points to a text file, False otherwise.
+    :param file_path: The filepath to check.
+    :param ignore_patterns: A list of patterns to ignore.
+    :return: True if the given filepath points to a text file, False otherwise.
+    """
+    for pattern in ignore_patterns:
+        if fnmatch.fnmatch(file_path, pattern):
+            return True
+
+    return False
+
 
 def find_file_paths(root_directory: str) -> list[str]:
     """
@@ -19,12 +33,13 @@ def find_file_paths(root_directory: str) -> list[str]:
     :return: A list of file paths.
     """
     text_file_paths = []
+    ignore_patterns = []
 
     for current_directory, _, file_names in os.walk(root_directory):
         for file_name in file_names:
             file_path = str(os.path.join(current_directory, file_name))
 
-            if is_supported_file(file_path):
+            if is_supported_file(file_path) and not should_ignore_file(file_path, ignore_patterns):
                 text_file_paths.append(file_path)
 
     return text_file_paths
