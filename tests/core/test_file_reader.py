@@ -19,7 +19,7 @@ def test_given_existing_file_when_read_file_content_then_returns_expected_conten
 def test_given_existing_empty_file_when_read_file_content_then_returns_expected_content(tmp_path):
     # Given
     file_path = tmp_path / "file.txt"
-    file_path.write_text("", encoding = "utf-8")
+    file_path.write_text("", encoding="utf-8")
 
     # When
     result = read_file_content(str(file_path))
