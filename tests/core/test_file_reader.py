@@ -7,7 +7,7 @@ def test_given_existing_file_when_read_file_content_then_returns_expected_conten
     # Given
     file_path = tmp_path / "file.txt"
     expected_content = "This is the expected content."
-    file_path.write_text(expected_content, encoding = "utf-8")
+    file_path.write_text(expected_content, encoding="utf-8")
 
     # When
     result = read_file_content(str(file_path))
