@@ -1,8 +1,8 @@
 import pytest
 
+from pathlib import Path
 from src.configuration.constants import ALLOWED_FILE_EXTENSIONS
 from src.core.file_scanner import is_supported_file_extension, find_file_paths
-from tests.utilities.file_creation import create_files
 
 
 @pytest.mark.parametrize("extension", list(ALLOWED_FILE_EXTENSIONS))
@@ -63,3 +63,20 @@ def test_given_mixed_directory_when_find_file_paths_then_returns_only_supported(
     # Then
     assert created_files[1] in result
     assert len(result) == 1
+
+
+def create_files(base_directory: Path, file_names: list[str]) -> list[str]:
+    """
+    Creates files into a defined directory.
+
+    :param base_directory: The base directory where the files will be created.
+    :param file_names: The names of the files to be created.
+    """
+    paths = []
+
+    for file_name in file_names:
+        path = base_directory / file_name
+        path.write_text("")
+        paths.append(str(path))
+
+    return paths
