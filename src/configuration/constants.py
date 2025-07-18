@@ -1,2 +1,2 @@
 ALLOWED_FILE_EXTENSIONS = [".txt", ".json", ".java", ".py"]
-OUTPUT_FILENAME = "output.txt"
+OUTPUT_FILE_NAME = "output.txt"
