@@ -16,7 +16,7 @@ def files(tmp_path):
     return file_paths
 
 
-def test_given_existing_files_when_concatenate_file_contents_then_return_concatenated_contents(files):
+def test_given_files_when_concatenate_file_contents_then_return_concatenated_contents(files):
     # Given
     expected_output = (
         "File: file_1.txt\n\nContent of file 1\n"
