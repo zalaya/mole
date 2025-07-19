@@ -5,39 +5,27 @@ from src.core.content_handler import concatenate_file_contents
 
 @pytest.fixture
 def files(tmp_path):
-    file_paths = [
-        tmp_path / "file_1.txt",
-        tmp_path / "file_2.txt",
-        tmp_path / "file_3.txt"
-    ]
+    contents = ["Content of file 1", "Content of file 2", ""]
+    file_paths = []
 
-    file_contents = {
-        file_paths[0]: "Content of file 1",
-        file_paths[1]: "Content of file 2",
-        file_paths[2]: ""
-    }
-
-    for file_path, content in file_contents.items():
+    for i, content in enumerate(contents, start=1):
+        file_path = tmp_path / f"file_{i}.txt"
         file_path.write_text(content, encoding="utf-8")
+        file_paths.append(file_path)
 
-    return tmp_path, file_paths, file_contents
+    return file_paths
 
 
-def test_concatenate_file_contents(files):
+def test_given_existing_files_when_concatenate_file_contents_then_return_concatenated_contents(files):
     # Given
-    tmp_path, file_paths, file_contents = files
-
-    expected_content = (
-        "File: file_1.txt\n\nContent of file 1\n\n"
-        "File: file_2.txt\n\nContent of file 2\n\n"
+    expected_output = (
+        "File: file_1.txt\n\nContent of file 1\n"
+        "File: file_2.txt\n\nContent of file 2\n"
         "File: file_3.txt\n\n"
     )
 
     # When
-    concatenated_content = concatenate_file_contents(file_paths)
-
-    normalized_expected = "\n".join(line.strip() for line in expected_content.splitlines() if line.strip())
-    normalized_actual = "\n".join(line.strip() for line in concatenated_content.splitlines() if line.strip())
+    result = concatenate_file_contents(files)
 
     # Then
-    assert normalized_actual == normalized_expected
+    assert result == expected_output
