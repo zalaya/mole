@@ -9,5 +9,6 @@ exclude = '''
   | build
   | dist
   | src/__main__.py
+  | LICENSE
 )
 '''
