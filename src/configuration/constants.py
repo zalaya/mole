@@ -1,4 +1,5 @@
 OUTPUT_FILE_NAME = "output.txt"
+IGNORE_FILE_NAME = "blacklist.txt"
 
 ALLOWED_FILE_EXTENSIONS = [
     ".py",
