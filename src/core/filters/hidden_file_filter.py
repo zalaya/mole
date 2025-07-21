@@ -1,6 +1,6 @@
 import os
 
-from file_filter import FileFilter
+from src.core.filters.file_filter import FileFilter
 
 
 class HiddenFileFilter(FileFilter):

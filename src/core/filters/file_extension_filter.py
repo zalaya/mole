@@ -1,6 +1,6 @@
 import os
 
-from file_filter import FileFilter
+from src.core.filters.file_filter import FileFilter
 from src.configuration.constants import ALLOWED_FILE_EXTENSIONS
 
 

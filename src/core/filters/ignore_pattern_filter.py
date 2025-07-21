@@ -1,7 +1,7 @@
 import os
 import fnmatch
 
-from file_filter import FileFilter
+from src.core.filters.file_filter import FileFilter
 from src.configuration.constants import IGNORE_FILE_NAME
 
 
