@@ -1,12 +1,14 @@
-import os
+from pathlib import Path
 
-from src.core.content_handler import concatenate_file_contents
-from src.core.file_scanner import find_file_paths
-from src.core.file_writer import write_file_content
+from src.core.io.reader import read_files
+from src.core.io.writer import write_output
+from src.core.scanner.scanner import find_file_paths
+from src.core.aggregator import concatenate_file_contents
 
 
 if __name__ == "__main__":
-    base_directory = os.getcwd()
-    text_file_paths = find_file_paths(base_directory)
-    concatenated_content = concatenate_file_contents(text_file_paths)
-    write_file_content(concatenated_content)
+    root_directory = Path.cwd()
+    paths = find_file_paths(root_directory)
+    file_entries = read_files(paths)
+    concatenated_content = concatenate_file_contents(file_entries)
+    write_output(concatenated_content)

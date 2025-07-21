@@ -1,7 +1,10 @@
-OUTPUT_FILE_NAME = "output.txt"
-IGNORE_FILE_NAME = "blacklist.txt"
+from pathlib import Path
 
-ALLOWED_FILE_EXTENSIONS = [
+
+OUTPUT_FILE_NAME = Path("output.txt")
+IGNORE_FILE_NAME = Path("blacklist.txt")
+
+ALLOWED_FILE_EXTENSIONS = {
     ".py",
     ".java",
     ".js",
@@ -44,4 +47,4 @@ ALLOWED_FILE_EXTENSIONS = [
     ".ps1",
     ".dockerfile",
     ".makefile",
-]
+}
