@@ -2,12 +2,12 @@
 
 set -euo pipefail
 
-output_file="output.txt"
-root_directory="."
-blacklist_file=""
-watch_mode=false
+output_file_path="output.txt"
+base_directory="."
+blacklist_file_path=""
+is_watch_mode_enabled=false
+is_header_displayed=false
 refresh_interval=5
-watch_shown=false
 
 function print_usage_message() {
   cat <<EOF
@@ -19,74 +19,84 @@ Options:
   -o, --output FILE        Output file path (default: output.txt)
   -b, --blacklist FILE     Path to file with ignore patterns (one per line)
   -w, --watch              Enable watch mode to regenerate output on changes
+  -i, --interval SEC       Polling interval in seconds when in watch mode (default: 5)
   -h, --help               Show this help message
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -o|--output) output_file="$2"; shift; shift ;;
-    -b|--blacklist) blacklist_file="$2"; shift; shift ;;
-    -w|--watch) watch_mode=true; shift ;;
+    -o|--output) output_file_path="$2" ; shift 2 ;;
+    -b|--blacklist) blacklist_file_path="$2" ; shift 2 ;;
+    -w|--watch) is_watch_mode_enabled=true ; shift ;;
+    -i|--interval) refresh_interval="$2" ; shift 2 ;;
     -h|--help) print_usage_message ; exit 0 ;;
-    -*) echo "Unknown option: $1"; print_usage_message ; exit 1 ;;
-    *) root_directory="$1"; shift ;;
+    -*) echo "Unknown option: $1" ; print_usage_message ; exit 1 ;;
+    *) base_directory="$1"; shift ;;
   esac
 done
 
-output_file=$(realpath "$output_file")
-root_directory=$(realpath "$root_directory")
-last_hash=""
+output_file_path=$(realpath "$output_file_path")
+base_directory=$(realpath "$base_directory")
+
+if [[ -n "$blacklist_file_path" && ! -r "$blacklist_file_path" ]]; then
+  echo "Error: Cannot read blacklist file '$blacklist_file_path'." >&2
+  exit 1
+fi
+
+previous_scanned_hash=""
 
 while true; do
-  prune_expressions=()
+  find_prune_arguments=()
+  ignore_patterns=()
 
-  if [[ -n "$blacklist_file" ]]; then
-    mapfile -t ignore_patterns < <(sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//' -e '/^#/d' -e '/^$/d' -e 's@/*$@@' "$blacklist_file")
+  if [[ -n "$blacklist_file_path" ]]; then
+    mapfile -t ignore_patterns < <(sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//' -e '/^#/d' -e '/^$/d' -e 's@/*$@@' "$blacklist_file_path")
 
     for pattern in "${ignore_patterns[@]}"; do
-      pattern_abs=$(realpath -m "${root_directory}/${pattern#/}")
-      prune_expressions+=( -path "$pattern_abs" -prune -o )
+      absolute_pattern=$(realpath -m "${base_directory}/${pattern#/}")
+      find_prune_arguments+=( -path "$absolute_pattern" -prune -o )
     done
   fi
 
-  : > "$output_file"
+  : > "$output_file_path"
 
-  find_arguments=( "$root_directory" "${prune_expressions[@]}" -type f ! -path "$output_file" -print )
+  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f ! -path "$output_file_path" -print )
   mapfile -t files < <(find "${find_arguments[@]}" | sort)
 
-  for filepath in "${files[@]}"; do
-    filepath=${filepath//\\//}
-    relative_path=${filepath#"${root_directory}/"}
+  for absolute_file_path in "${files[@]}"; do
+    absolute_file_path=${absolute_file_path//\\//}
+    relative_file_path=${absolute_file_path#"${base_directory}/"}
 
-    if [[ -f "$filepath" ]]; then
+    if [[ -f "$absolute_file_path" ]]; then
       {
-        echo "File: $relative_path"
+        echo "File: '$relative_file_path'."
         echo
-        cat "$filepath"
+        cat "$absolute_file_path"
         echo
-      } >> "$output_file"
+        echo
+      } >> "$output_file_path"
     fi
   done
 
 
-  if ! $watch_mode; then
-    echo "Generated file: $output_file"
+  if ! $is_watch_mode_enabled; then
+    echo "Generated file: $output_file_path"
     break
   fi
 
-  if ! $watch_shown; then
-    echo "Generated file: $output_file"
-    echo "Watching '$root_directory' using polling every ${refresh_interval}s... (Ctrl+C to stop)"
+  if ! $is_header_displayed; then
+    echo "Generated file: '$output_file_path'."
+    echo "Watching '$base_directory' using polling every ${refresh_interval}s... (Ctrl+C to stop)"
 
-    watch_shown=true
+    is_header_displayed=true
   fi
 
   while true; do
-    current_hash=$(find "$root_directory" -type f -exec stat -c '%Y' {} + 2>/dev/null | sha256sum | awk '{print $1}')
+    current_scanned_hash=$(find "$base_directory" -type f -exec stat -c '%Y' {} + 2>/dev/null | sha256sum | awk '{print $1}')
 
-    if [[ "$current_hash" != "$last_hash" ]]; then
-      last_hash="$current_hash"
+    if [[ "$current_scanned_hash" != "$previous_scanned_hash" ]]; then
+      previous_scanned_hash="$current_scanned_hash"
       break
     fi
 
