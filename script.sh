@@ -32,7 +32,7 @@ while [[ $# -gt 0 ]]; do
     -i|--interval) refresh_interval="$2" ; shift 2 ;;
     -h|--help) print_usage_message ; exit 0 ;;
     -*) echo "Unknown option: $1" ; print_usage_message ; exit 1 ;;
-    *) base_directory="$1"; shift ;;
+    *) base_directory="$1" ; shift ;;
   esac
 done
 
@@ -78,7 +78,6 @@ while true; do
       } >> "$output_file_path"
     fi
   done
-
 
   if ! $is_watch_mode_enabled; then
     echo "Generated file: $output_file_path"

@@ -9,10 +9,10 @@ It’s perfect for sharing code with **ChatGPT** or other AI tools, without need
 
 ## 💡 Why use it?
 
-- 🧠 AI-friendly: share full codebase context in one go.
-- ⚡ Fast: ideal for debugging, refactoring, or support.
-- 📦 Git-free: works on any directory, no repo required.
-- 🌍 Remote-ready: run with a single command from anywhere.
+- 🧠 AI-friendly: Share full codebase context in one go.
+- ⚡ Fast: Ideal for debugging, refactoring, or support.
+- 📦 Git-free: Works on any directory, no repo required.
+- 🌍 Remote-ready: Run with a single command from anywhere.
 
 ---
 
@@ -34,6 +34,7 @@ bash <(curl -s https://raw.githubusercontent.com/Zalaya/Mole/main/script.sh) [op
 
 > [!TIP]
 > **Use Mole as a global command**
+>
 > Add this alias to your shell config (`~/.bashrc`, `~/.zshrc`) to call Mole from anywhere:
 >
 > ```bash
