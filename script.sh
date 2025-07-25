@@ -21,10 +21,10 @@ Usage: $(basename "$0") [OPTIONS] [DIRECTORY]
 Concatenate all file contents from the given directory into a single output file
 
 Options:
-  -o, --output FILE        Output file path (default: output.txt)
+  -o, --output FILE        Output file path (default: '$DEFAULT_OUTPUT_FILE_PATH')
   -b, --blacklist FILE     Path to file with ignore patterns (one per line)
   -w, --watch              Enable watch mode to regenerate output on changes
-  -i, --interval SEC       Polling interval in seconds when in watch mode (default: 5)
+  -i, --interval SEC       Polling interval in seconds when in watch mode (default: '$DEFAULT_REFRESH_INTERVAL')
   -h, --help               Show this help message
 EOF
 }
