@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+trap 'echo; echo "Aborted."; exit 0' INT
 
 readonly DEFAULT_OUTPUT_FILE_PATH="output.txt"
 readonly DEFAULT_BASE_DIRECTORY="."
