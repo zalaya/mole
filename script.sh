@@ -2,12 +2,16 @@
 
 set -euo pipefail
 
-output_file_path="output.txt"
-base_directory="."
+readonly DEFAULT_OUTPUT_FILE_PATH="output.txt"
+readonly DEFAULT_BASE_DIRECTORY="."
+readonly DEFAULT_REFRESH_INTERVAL=5
+
+output_file_path="$DEFAULT_OUTPUT_FILE_PATH"
+base_directory="$DEFAULT_BASE_DIRECTORY"
 blacklist_file_path=""
 is_watch_mode_enabled=false
 is_header_displayed=false
-refresh_interval=5
+refresh_interval="$DEFAULT_REFRESH_INTERVAL"
 
 function print_usage_message() {
   cat <<EOF
@@ -31,7 +35,7 @@ while [[ $# -gt 0 ]]; do
     -w|--watch) is_watch_mode_enabled=true ; shift ;;
     -i|--interval) refresh_interval="$2" ; shift 2 ;;
     -h|--help) print_usage_message ; exit 0 ;;
-    -*) echo "Unknown option: $1" ; print_usage_message ; exit 1 ;;
+    -*) echo "Unknown option: $1" >&2 ; print_usage_message ; exit 1 ;;
     *) base_directory="$1" ; shift ;;
   esac
 done
