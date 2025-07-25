@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
-trap 'echo; echo "Aborted."; exit 0' INT
+trap 'echo; echo "Aborted"; exit 0' INT
 
 readonly DEFAULT_OUTPUT_FILE_PATH="output.txt"
 readonly DEFAULT_BASE_DIRECTORY="."
@@ -18,7 +18,7 @@ function print_usage_message() {
   cat <<EOF
 Usage: $(basename "$0") [OPTIONS] [DIRECTORY]
 
-Concatenate all file contents from the given directory into a single output file.
+Concatenate all file contents from the given directory into a single output file
 
 Options:
   -o, --output FILE        Output file path (default: output.txt)
@@ -45,7 +45,7 @@ output_file_path=$(realpath "$output_file_path")
 base_directory=$(realpath "$base_directory")
 
 if [[ -n "$blacklist_file_path" && ! -r "$blacklist_file_path" ]]; then
-  echo "Error: Cannot read blacklist file '$blacklist_file_path'." >&2
+  echo "Error: Cannot read blacklist file '$blacklist_file_path'" >&2
   exit 1
 fi
 
@@ -75,7 +75,7 @@ while true; do
 
     if [[ -f "$absolute_file_path" ]]; then
       {
-        echo "File: '$relative_file_path'."
+        echo "File: '$relative_file_path'"
         echo
         cat "$absolute_file_path"
         echo
@@ -90,7 +90,7 @@ while true; do
   fi
 
   if ! $is_header_displayed; then
-    echo "Generated file: '$output_file_path'."
+    echo "Generated file: '$output_file_path'"
     echo "Watching '$base_directory' using polling every ${refresh_interval}s... (Ctrl+C to stop)"
 
     is_header_displayed=true
