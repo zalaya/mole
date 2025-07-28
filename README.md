@@ -3,7 +3,7 @@
 **Mole** is a minimal Bash tool that dumps the content of an entire directory into a single text file.  
 It’s perfect for sharing code with **ChatGPT** or other AI tools, without needing Git.
 
-> 🔁 Alternative to [Gitingest](https://github.com/cyclotruc/gitingest) — but no Git, no setup, just files.
+> 🔁 Alternative to [Gitingest](https://github.com/coderamp-labs/gitingest) — but no Git, no setup, just files.
 
 ---
 
@@ -29,7 +29,7 @@ It’s perfect for sharing code with **ChatGPT** or other AI tools, without need
 You can run **Mole** directly from GitHub with:
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/Zalaya/Mole/main/script.sh) [options] [root_directory]
+bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/main/script.sh) [options] [root_directory]
 ```
 
 > [!TIP]
@@ -38,7 +38,7 @@ bash <(curl -s https://raw.githubusercontent.com/Zalaya/Mole/main/script.sh) [op
 > Add this alias to your shell config (`~/.bashrc`, `~/.zshrc`) to call Mole from anywhere:
 >
 > ```bash
-> alias mole='bash <(curl -s https://raw.githubusercontent.com/Zalaya/Mole/main/script.sh)'
+> alias mole='bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/main/script.sh)'
 > ```
 >
 > Then simply run:
@@ -52,8 +52,8 @@ bash <(curl -s https://raw.githubusercontent.com/Zalaya/Mole/main/script.sh) [op
 ## 🖥️ Local usage
 
 ```bash
-git clone https://github.com/Zalaya/Mole.git
-cd Mole
+git clone https://github.com/zalaya/mole.git
+cd mole
 chmod +x script.sh
 ./script.sh [options] [root_directory]
 ```
