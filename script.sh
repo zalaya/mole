@@ -3,11 +3,10 @@
 set -euo pipefail
 trap 'echo; echo "Aborted"; exit 0' INT
 
-readonly DEFAULT_OUTPUT_FILE_PATH="output.txt"
 readonly DEFAULT_BASE_DIRECTORY="."
 readonly DEFAULT_REFRESH_INTERVAL=5
 
-output_file_path="$DEFAULT_OUTPUT_FILE_PATH"
+output_file_path=""
 base_directory="$DEFAULT_BASE_DIRECTORY"
 blacklist_file_path=""
 is_watch_mode_enabled=false
@@ -21,7 +20,7 @@ Usage: $(basename "$0") [OPTIONS] [DIRECTORY]
 Concatenate all file contents from the given directory into a single output file
 
 Options:
-  -o, --output FILE        Output file path (default: '$DEFAULT_OUTPUT_FILE_PATH')
+  -o, --output FILE        Output file path (if not provided, prints to stdout)
   -b, --blacklist FILE     Path to file with ignore patterns (one per line)
   -w, --watch              Enable watch mode to regenerate output on changes
   -i, --interval SEC       Polling interval in seconds when in watch mode (default: '$DEFAULT_REFRESH_INTERVAL')
@@ -41,8 +40,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-output_file_path=$(realpath "$output_file_path")
 base_directory=$(realpath "$base_directory")
+output_destination="/dev/stdout"
+
+if [[ -n "$output_file_path" ]]; then
+  output_destination=$(realpath "$output_file_path")
+fi
 
 if [[ -n "$blacklist_file_path" && ! -r "$blacklist_file_path" ]]; then
   echo "Error: Cannot read blacklist file '$blacklist_file_path'" >&2
@@ -63,9 +66,9 @@ while true; do
     done
   fi
 
-  > "$output_file_path"
+  > "$output_destination"
 
-  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f ! -path "$output_file_path" )
+  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f ! -path "$output_destination" )
   mapfile -t files < <(find "${find_arguments[@]}" | sort)
 
   for absolute_file_path in "${files[@]}"; do
@@ -78,19 +81,19 @@ while true; do
         echo
         sed -e '$a\' "$absolute_file_path"
         echo
-      } >> "$output_file_path"
+      } >> "$output_destination"
     fi
   done
 
   if ! $is_watch_mode_enabled; then
-    echo "Generated file: '$output_file_path'"
+    [[ -n "$output_file_path" ]] && echo "Generated file: '$output_file_path'"
     break
   fi
 
   if ! $is_header_displayed; then
-    echo "Generated file: '$output_file_path'"
+    [[ -n "$output_file_path" ]] && echo "Generated file: '$output_file_path'"
     echo "Watching '$base_directory' using polling every ${refresh_interval}s... (Ctrl+C to stop)"
-
+    
     is_header_displayed=true
   fi
 
