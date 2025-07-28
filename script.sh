@@ -76,8 +76,7 @@ while true; do
       {
         echo "File: '$relative_file_path'"
         echo
-        cat "$absolute_file_path"
-        echo
+        sed -e '$a\' "$absolute_file_path"
         echo
       } >> "$output_file_path"
     fi
