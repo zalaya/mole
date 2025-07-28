@@ -14,7 +14,7 @@ is_watch_mode_enabled=false
 is_header_displayed=false
 refresh_interval="$DEFAULT_REFRESH_INTERVAL"
 
-function print_usage_message() {
+print_usage_message() {
   cat <<EOF
 Usage: $(basename "$0") [OPTIONS] [DIRECTORY]
 
@@ -31,13 +31,13 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -o|--output) output_file_path="$2" ; shift 2 ;;
-    -b|--blacklist) blacklist_file_path="$2" ; shift 2 ;;
-    -w|--watch) is_watch_mode_enabled=true ; shift ;;
-    -i|--interval) refresh_interval="$2" ; shift 2 ;;
-    -h|--help) print_usage_message ; exit 0 ;;
-    -*) echo "Unknown option: '$1'" >&2 ; print_usage_message ; exit 1 ;;
-    *) base_directory="$1" ; shift ;;
+    -o|--output) output_file_path="$2"; shift 2 ;;
+    -b|--blacklist) blacklist_file_path="$2"; shift 2 ;;
+    -w|--watch) is_watch_mode_enabled=true; shift ;;
+    -i|--interval) refresh_interval="$2"; shift 2 ;;
+    -h|--help) print_usage_message; exit 0 ;;
+    -*) echo "Unknown option: '$1'" >&2; print_usage_message; exit 1 ;;
+    *) base_directory="$1"; shift ;;
   esac
 done
 
@@ -59,14 +59,13 @@ while true; do
     mapfile -t ignore_patterns < <(sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//' -e '/^#/d' -e '/^$/d' -e 's@/*$@@' "$blacklist_file_path")
 
     for pattern in "${ignore_patterns[@]}"; do
-      absolute_pattern=$(realpath -m "${base_directory}/${pattern#/}")
-      find_prune_arguments+=( -path "$absolute_pattern" -prune -o )
+      find_prune_arguments+=( -path "$base_directory/$pattern" -prune -o )
     done
   fi
 
-  : > "$output_file_path"
+  > "$output_file_path"
 
-  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f ! -path "$output_file_path" -print )
+  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f ! -path "$output_file_path" )
   mapfile -t files < <(find "${find_arguments[@]}" | sort)
 
   for absolute_file_path in "${files[@]}"; do
@@ -96,14 +95,12 @@ while true; do
     is_header_displayed=true
   fi
 
-  while true; do
-    current_scanned_hash=$(find "$base_directory" -type f -exec stat -c '%Y' {} + 2>/dev/null | sha256sum | awk '{print $1}')
-
-    if [[ "$current_scanned_hash" != "$previous_scanned_hash" ]]; then
-      previous_scanned_hash="$current_scanned_hash"
-      break
-    fi
-
+  current_scanned_hash=""
+  
+  until [[ "$current_scanned_hash" != "$previous_scanned_hash" ]]; do
     sleep "$refresh_interval"
+    current_scanned_hash=$(find "$base_directory" -type f -exec stat -c '%Y' {} + 2>/dev/null | sha256sum | awk '{print $1}')
   done
+
+  previous_scanned_hash="$current_scanned_hash"
 done
