@@ -66,7 +66,7 @@ chmod +x script.sh
 
 | Short | Long             | Description                                               |
 | ----- | ---------------- | --------------------------------------------------------- |
-| `-o`  | `--output`       | Output file name (default: `output.txt`)                  |
+| `-o`  | `--output`       | Output file name (if not provided, prints to stdout)      |
 | `-b`  | `--blacklist`    | Path to blacklist file (excludes files/directories)       |
 | `-w`  | `--watch`        | Enable watch mode to regenerate output on any file change |
 | `-h`  | `--help`         | Show usage help                                           |
