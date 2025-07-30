@@ -12,6 +12,7 @@ blacklist_file_path=""
 is_watch_mode_enabled=false
 is_header_displayed=false
 refresh_interval="$DEFAULT_REFRESH_INTERVAL"
+redirected_output_file=""
 
 print_usage_message() {
   cat <<EOF
@@ -45,6 +46,12 @@ output_destination="/dev/stdout"
 
 if [[ -n "$output_file_path" ]]; then
   output_destination=$(realpath "$output_file_path")
+else
+  stdout_target=$(readlink -f /proc/$$/fd/1 2>/dev/null || echo "")
+  
+  if [[ -n "$stdout_target" && -f "$stdout_target" ]]; then
+    redirected_output_file="$stdout_target"
+  fi
 fi
 
 if [[ -n "$blacklist_file_path" && ! -r "$blacklist_file_path" ]]; then
@@ -60,15 +67,24 @@ while true; do
 
   if [[ -n "$blacklist_file_path" ]]; then
     mapfile -t ignore_patterns < <(sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//' -e '/^#/d' -e '/^$/d' -e 's@/*$@@' "$blacklist_file_path")
-
+    
     for pattern in "${ignore_patterns[@]}"; do
       find_prune_arguments+=( -path "$base_directory/$pattern" -prune -o )
     done
   fi
 
-  > "$output_destination"
+  if [[ -n "$output_file_path" ]]; then
+    > "$output_destination"
+  fi
 
-  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f ! -path "$output_destination" )
+  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f )
+
+  if [[ -n "$output_file_path" ]]; then
+    find_arguments+=( ! -path "$output_destination" )
+  elif [[ -n "$redirected_output_file" ]]; then
+    find_arguments+=( ! -path "$redirected_output_file" )
+  fi
+
   mapfile -t files < <(find "${find_arguments[@]}" | sort)
 
   for absolute_file_path in "${files[@]}"; do
