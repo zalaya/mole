@@ -48,7 +48,7 @@ if [[ -n "$output_file_path" ]]; then
   output_destination=$(realpath "$output_file_path")
 else
   stdout_target=$(readlink -f /proc/$$/fd/1 2>/dev/null || echo "")
-  
+
   if [[ -n "$stdout_target" && -f "$stdout_target" ]]; then
     redirected_output_file="$stdout_target"
   fi
