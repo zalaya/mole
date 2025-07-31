@@ -31,13 +31,13 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    -o|--output) output_file_path="$2"; shift 2 ;;
-    -b|--blacklist) blacklist_file_path="$2"; shift 2 ;;
-    -w|--watch) is_watch_mode_enabled=true; shift ;;
-    -i|--interval) refresh_interval="$2"; shift 2 ;;
-    -h|--help) print_usage_message; exit 0 ;;
-    -*) echo "Unknown option: '$1'" >&2; print_usage_message; exit 1 ;;
-    *) base_directory="$1"; shift ;;
+    -o|--output) output_file_path="$2"; shift 2;;
+    -b|--blacklist) blacklist_file_path="$2"; shift 2;;
+    -w|--watch) is_watch_mode_enabled=true; shift;;
+    -i|--interval) refresh_interval="$2"; shift 2;;
+    -h|--help) print_usage_message; exit 0;;
+    -*) echo "Unknown option: '$1'" >&2; print_usage_message; exit 1;;
+    *) base_directory="$1"; shift;;
   esac
 done
 
@@ -67,9 +67,9 @@ while true; do
 
   if [[ -n "$blacklist_file_path" ]]; then
     mapfile -t ignore_patterns < <(sed -e 's/^[[:space:]]\+//' -e 's/[[:space:]]\+$//' -e '/^#/d' -e '/^$/d' -e 's@/*$@@' "$blacklist_file_path")
-    
+
     for pattern in "${ignore_patterns[@]}"; do
-      find_prune_arguments+=( -path "$base_directory/$pattern" -prune -o )
+      find_prune_arguments+=(-path "$base_directory/$pattern" -prune -o)
     done
   fi
 
@@ -77,12 +77,12 @@ while true; do
     > "$output_destination"
   fi
 
-  find_arguments=( "$base_directory" "${find_prune_arguments[@]}" -type f )
+  find_arguments=("$base_directory" "${find_prune_arguments[@]}" -type f)
 
   if [[ -n "$output_file_path" ]]; then
-    find_arguments+=( ! -path "$output_destination" )
+    find_arguments+=(! -path "$output_destination")
   elif [[ -n "$redirected_output_file" ]]; then
-    find_arguments+=( ! -path "$redirected_output_file" )
+    find_arguments+=(! -path "$redirected_output_file")
   fi
 
   mapfile -t files < <(find "${find_arguments[@]}" | sort)
@@ -109,12 +109,12 @@ while true; do
   if ! $is_header_displayed; then
     [[ -n "$output_file_path" ]] && echo "Generated file: '$output_file_path'"
     echo "Watching '$base_directory' using polling every ${refresh_interval}s... (Ctrl+C to stop)"
-    
+
     is_header_displayed=true
   fi
 
   current_scanned_hash=""
-  
+
   until [[ "$current_scanned_hash" != "$previous_scanned_hash" ]]; do
     sleep "$refresh_interval"
     current_scanned_hash=$(find "$base_directory" -type f -exec stat -c '%Y' {} + 2>/dev/null | sha256sum | awk '{print $1}')
