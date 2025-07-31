@@ -91,7 +91,7 @@ while true; do
     absolute_file_path=${absolute_file_path//\\//}
     relative_file_path=${absolute_file_path#"${base_directory}/"}
 
-    if [[ -f "$absolute_file_path" ]]; then
+    if [[ -f "$absolute_file_path" ]] && grep -Iq . "$absolute_file_path"; then
       {
         echo "File: '$relative_file_path'"
         echo
