@@ -91,11 +91,11 @@ while true; do
     absolute_file_path=${absolute_file_path//\\//}
     relative_file_path=${absolute_file_path#"${base_directory}/"}
 
-    if [[ -f "$absolute_file_path" ]] && grep -Iq . "$absolute_file_path"; then
+    if [[ -f "$absolute_file_path" ]] && file --mime-type "$absolute_file_path" | grep -q 'text/'; then
       {
         echo "File: '$relative_file_path'"
         echo
-        sed -e '$a\' "$absolute_file_path"
+        sed -e '$a\' "$absolute_file_path" | tr -d '\000'
         echo
       } >> "$output_destination"
     fi
