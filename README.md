@@ -20,7 +20,7 @@ Perfect for sharing projects with **ChatGPT** or other AI tools – **no Git req
 ## 🌀 Quick usage (no install)
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/main/script.sh) [options] [directory]
+bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/v1.2.0/script.sh) [options] [directory]
 ```
 
 ---
@@ -28,7 +28,7 @@ bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/main/script.sh) [op
 ## 🛠️ Global installation
 
 ```bash
-sudo curl -sL https://raw.githubusercontent.com/zalaya/mole/main/script.sh -o /usr/local/bin/mole
+sudo curl -sL https://raw.githubusercontent.com/zalaya/mole/v1.2.0/script.sh -o /usr/local/bin/mole
 sudo chmod +x /usr/local/bin/mole
 ```
 
