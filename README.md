@@ -65,29 +65,6 @@ node_modules/
 .env
 ```
 
----
-
-## 🔥 Examples
-
-```bash
-# Generate a concatenated file
-mole -o output.txt .
-
-# Live updates on changes
-mole -w .
-
-# Count total lines of code
-mole | wc -l
-
-# Find TODO comments
-mole | grep "TODO"
-
-# Compare two directories
-diff <(mole dir1) <(mole dir2)
-```
-
----
-
 ## ✅ Requirements
 
 * **Bash** v4+  
@@ -98,4 +75,4 @@ diff <(mole dir1) <(mole dir2)
 
 ## 📄 License
 
-[GPL-3.0 License](https://github.com/Zalaya/mole/blob/main/LICENSE) – © [Zalaya](https://github.com/Zalaya)
+[GNUv3 License](https://github.com/Zalaya/mole/blob/main/LICENSE) – © [Zalaya](https://github.com/Zalaya)
