@@ -18,7 +18,7 @@ Perfect for sharing projects with **ChatGPT** or other AI tools – **no Git req
 
 ---
 
-## 🌀 Quick usage (no install)
+## 🌀 Quick usage
 
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/Zalaya/mole/v1.3.0/script.sh) [options] [directory]
