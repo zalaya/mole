@@ -65,8 +65,6 @@ node_modules/
 .env
 ```
 
-> Note: Only simple path-based ignores are supported (not full `.gitignore` syntax).
-
 ---
 
 ## 🔥 Examples
