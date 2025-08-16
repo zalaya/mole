@@ -3,8 +3,6 @@
 **Mole** is a lightweight **Bash tool** that concatenates the entire content of a directory into a single text file.
 Perfect for sharing projects with **ChatGPT** or other AI tools – **no Git required**.
 
-> 🔁 A minimal alternative to [Gitingest](https://github.com/coderamp-labs/gitingest) — no repos, no setup, just files.
-
 ---
 
 ## 🚀 Features
