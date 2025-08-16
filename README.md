@@ -11,16 +11,17 @@ Perfect for sharing projects with **ChatGPT** or other AI tools – **no Git req
 
 * 🧠 **AI-friendly** – Send your full codebase to LLMs.
 * ⚡ **Fast & minimal** – Pure Bash, no dependencies.
-* 🛡️ **Blacklist support** – Ignore files and folders (`.gitignore` style).
+* 🛡️ **Blacklist support** – Ignore files and folders with a custom pattern file.
 * 🔄 **Watch mode** – Auto-updates output when files change.
 * 🌍 **Remote or global usage** – Run directly from GitHub or install system-wide.
+* 📝 **Text-only** – Binary files (e.g. images, PDFs) are skipped.
 
 ---
 
 ## 🌀 Quick usage (no install)
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/v1.3.0/script.sh) [options] [directory]
+bash <(curl -s https://raw.githubusercontent.com/Zalaya/mole/v1.3.0/script.sh) [options] [directory]
 ```
 
 ---
@@ -28,7 +29,7 @@ bash <(curl -s https://raw.githubusercontent.com/zalaya/mole/v1.3.0/script.sh) [
 ## 🛠️ Global installation
 
 ```bash
-sudo curl -sL https://raw.githubusercontent.com/zalaya/mole/v1.3.0/script.sh -o /usr/local/bin/mole
+sudo curl -sL https://raw.githubusercontent.com/Zalaya/mole/v1.3.0/script.sh -o /usr/local/bin/mole
 sudo chmod +x /usr/local/bin/mole
 ```
 
@@ -55,16 +56,16 @@ mole [options] [directory]
 
 ## 🧾 Blacklist example
 
-Works like `.gitignore`:
-
 ```txt
-# Ignore directories
+# Ignored directories
 .git/
 node_modules/
 
-# Ignore files
+# Ignored files
 .env
 ```
+
+> Note: Only simple path-based ignores are supported (not full `.gitignore` syntax).
 
 ---
 
@@ -91,12 +92,12 @@ diff <(mole dir1) <(mole dir2)
 
 ## ✅ Requirements
 
-* **Bash** v4+
-* Tools: `find`, `sed`, `stat`, `sha256sum`, `awk`
-* Works on Linux, macOS, WSL, Git Bash (Windows)
+* **Bash** v4+  
+* Tools: `find`, `sed`, `stat`, `sha256sum`, `awk`, `file`.
+* Works on Linux, macOS, WSL, Git Bash (Windows).
 
 ---
 
 ## 📄 License
 
-[GNU v3 License](https://github.com/zalaya/mole/blob/main/LICENSE) – © [Zalaya](https://github.com/zalaya)
+[GPL-3.0 License](https://github.com/Zalaya/mole/blob/main/LICENSE) – © [Zalaya](https://github.com/Zalaya)
