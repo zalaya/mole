@@ -52,7 +52,7 @@ mole [options] [directory]
 
 ---
 
-## 🧾 Blacklist example
+## 🧾 Blacklist file example
 
 ```txt
 # Ignored directories
@@ -65,7 +65,7 @@ node_modules/
 
 ## ✅ Requirements
 
-* **Bash** v4+  
+* **Bash** v4+.  
 * Tools: `find`, `sed`, `stat`, `sha256sum`, `awk`, `file`.
 * Works on Linux, macOS, WSL, Git Bash (Windows).
 
